@@ -87,11 +87,25 @@ SCRIPT_EXTENSIONS = [".asp", ".vbs", ".ps1", ".bas", ".bat", ".js", ".vb", ".vbe
 
 SCRIPT_TYPES = ["VBS", "PHP", "JSP", "ASP", "BATCH"]
 
+STRELA_BANNER = """######  ######## ########  ######## ##          ###
+##    ##    ##    ##     ## ##       ##         ## ##
+##          ##    ##     ## ##       ##        ##   ##
+ ######     ##    ########  ######   ##       ##     ##
+      ##    ##    ##   ##   ##       ##       #########
+##    ##    ##    ##    ##  ##       ##       ##     ##
+ ######     ##    ##     ## ######## ######## ##     ##"""
+
 
 def ioc_contains(sorted_list, value):
     # returns true if sorted_list contains value
     index = bisect_left(sorted_list, value)
     return index != len(sorted_list) and sorted_list[index] == value
+
+
+def print_strela_banner():
+    print(STRELA_BANNER)
+    print("Strela Scanner")
+    print("")
 
 
 class Loki(object):
@@ -1421,13 +1435,16 @@ def updateLoki(sigsOnly):
     pArgs = []
 
     # Updater
-    if os.path.exists(os.path.join(get_application_path(), 'loki-upgrader.exe')) and os_platform == "windows":
-        pArgs.append('loki-upgrader.exe')
+    if os.path.exists(os.path.join(get_application_path(), 'strela-scanner-upgrader.exe')) and os_platform == "windows":
+        pArgs.append('strela-scanner-upgrader.exe')
+    elif os.path.exists(os.path.join(get_application_path(), 'strela-scanner-upgrader.py')):
+        pArgs.append(args.python)
+        pArgs.append('strela-scanner-upgrader.py')
     elif os.path.exists(os.path.join(get_application_path(), 'loki-upgrader.py')):
         pArgs.append(args.python)
         pArgs.append('loki-upgrader.py')
     else:
-        logger.log("ERROR", "Update", "Cannot find neither thor-upgrader.exe nor thor-upgrader.py in the current working directory.")
+        logger.log("ERROR", "Update", "Cannot find neither strela-scanner-upgrader.exe nor strela-scanner-upgrader.py in the current working directory.")
 
     if sigsOnly:
         pArgs.append('--sigsonly')
@@ -1498,6 +1515,7 @@ def main():
     parser.add_argument('--force', action='store_true',
                         help='Force the scan on a certain folder (even if excluded with hard exclude in LOKI\'s code', default=False)
     parser.add_argument('--version', action='store_true', help='Shows welcome text and version of loki, then exit', default=False)
+    parser.add_argument('--no-banner', action='store_true', help='Disable Strela Scanner startup banner', default=False)
 
     args = parser.parse_args()
 
@@ -1509,7 +1527,7 @@ def main():
         print('The --logfolder and -l directives are not compatible with --nolog')
         sys.exit(1)
 		
-    filename = 'loki_%s_%s.log' % (getHostname(os_platform), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    filename = 'strela_%s_%s.log' % (getHostname(os_platform), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     if args.logfolder and args.l:
         print('Must specify either log folder with --logfolder, which uses the default filename, or log file with -l. Log file can be an absolute path')
         sys.exit(1)
@@ -1554,7 +1572,10 @@ if __name__ == '__main__':
         updateLoki(sigsOnly=False)
         sys.exit(0)
 
-    logger.log("NOTICE", "Init", "Starting Loki Scan VERSION: {3} SYSTEM: {0} TIME: {1} PLATFORM: {2}".format(
+    if not args.no_banner:
+        print_strela_banner()
+
+    logger.log("NOTICE", "Init", "Starting Strela Scanner VERSION: {3} SYSTEM: {0} TIME: {1} PLATFORM: {2}".format(
         getHostname(os_platform), getSyslogTimestamp(), getPlatformFull(), logger.version))
 
     # Loki
