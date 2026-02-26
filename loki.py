@@ -1575,7 +1575,7 @@ if __name__ == '__main__':
     if not args.no_banner:
         print_strela_banner()
 
-    logger.log("NOTICE", "Init", "Starting Loki Scan VERSION: {3} SYSTEM: {0} TIME: {1} PLATFORM: {2}".format(
+    logger.log("NOTICE", "Init", "Starting Strela Scanner VERSION: {3} SYSTEM: {0} TIME: {1} PLATFORM: {2}".format(
         getHostname(os_platform), getSyslogTimestamp(), getPlatformFull(), logger.version))
 
     # Loki

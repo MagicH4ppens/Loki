@@ -190,7 +190,7 @@ The '''exclude.cfg''' looks like this:
 
 # Screenshots
 
-Loki Scan
+Strela Scanner Scan
 
 ![Screen](/screens/lokiscan2.png)
 

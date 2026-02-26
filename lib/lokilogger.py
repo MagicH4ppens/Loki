@@ -224,10 +224,10 @@ class LokiLogger:
 
             print("  STRELA - YARA and IOC Scanner     ")
             print("  ")
-            print("   by Florian Roth, GNU General Public License")
+            print("   STRELA MAI, GNU General Public License")
             print("   version %s (Python 3 release)" % __version__)
             print("  ")
-            print("   DISCLAIMER - USE AT YOUR OWN RISK")
+            print("   DISCLAIMER - EDUCATIONAL USE ONLY")
             print(str(Back.WHITE))
             print(" ".ljust(79) + Back.BLACK + Fore.GREEN)
             print(Fore.WHITE+''+Back.BLACK)
