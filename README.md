@@ -43,7 +43,7 @@ The Windows binary is compiled with PyInstaller and should run as x86 applicatio
 
   - Download the newest version of LOKI from the [releases](https://github.com/Neo23x0/Loki/releases) section
   - Extract the program package
-  - Run loki-upgrader.exe on system with Internet access to retrieve the newest signatures
+  - Run strela-scanner-upgrader.exe on system with Internet access to retrieve the newest signatures
   - Bring the program folder to a target system that should be scanned: removable media, network share, folder on target system
   - Open a command line "cmd.exe" as Administrator and run it from there (you can also run LOKI without administrative privileges but some checks will be disabled and relevant objects on disk will not be accessible)
 
@@ -56,6 +56,13 @@ The Windows binary is compiled with PyInstaller and should run as x86 applicatio
     3. Search the web for keywords from the rule name (e.g. EQUATIONGroupMalware_1 > search for "Equation Group")
     4. Search the web for the MD5 hash of the sample
   - Please report back false positives via the "Issues" section, which is accessible via the right sidebar (mention the false positive indicator like a hash and/or filename and the rule name that triggered)
+
+
+## Strela Scanner Branding Notes
+
+This fork produces `strela-scanner.exe` as the primary scanner binary and `strela-scanner-upgrader.exe` for signature updates when built with the provided spec files.
+
+A startup banner is shown once at launch by default. Use `--no-banner` to disable it.
 
 ## Requirements
 
@@ -224,7 +231,7 @@ Download [PyInstaller](https://github.com/pyinstaller/pyinstaller/releases/), sw
 
     python ./pyinstaller.py -F C:\path\to\loki.py
 
-This will create a `loki.exe` in the subfolder `./loki/dist`.
+This will create a `strela-scanner.exe` in the subfolder `./loki/dist` when using the provided `loki.spec`.
 
 ## Pro Tip (optional)
 
