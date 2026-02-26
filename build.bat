@@ -19,8 +19,8 @@ ECHO Compiling LOKI UPGRADER ...
 if !errorlevel! neq 0 GOTO ERROR
 
 :: Copy Executables and other files to the package folder
-move .\dist\loki.exe %PACKAGE%\
-move .\dist\loki-upgrader.exe %PACKAGE%\
+move .\dist\strela-scanner.exe %PACKAGE%\
+move .\dist\strela-scanner-upgrader.exe %PACKAGE%\
 mkdir %PACKAGE%\tools
 copy .\tools\pe-sieve32.exe %PACKAGE%\tools
 copy .\tools\pe-sieve64.exe %PACKAGE%\tools
