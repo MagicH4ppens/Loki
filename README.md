@@ -58,7 +58,7 @@ The Windows binary is compiled with PyInstaller and should run as x86 applicatio
   - Please report back false positives via the "Issues" section, which is accessible via the right sidebar (mention the false positive indicator like a hash and/or filename and the rule name that triggered)
 
 
-## Strela Scanner Branding Notes
+## Strela
 
 This fork produces `strela-scanner.exe` as the primary scanner binary and `strela-scanner-upgrader.exe` for signature updates when built with the provided spec files.
 
