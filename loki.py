@@ -1435,13 +1435,16 @@ def updateLoki(sigsOnly):
     pArgs = []
 
     # Updater
-    if os.path.exists(os.path.join(get_application_path(), 'loki-upgrader.exe')) and os_platform == "windows":
-        pArgs.append('loki-upgrader.exe')
+    if os.path.exists(os.path.join(get_application_path(), 'strela-scanner-upgrader.exe')) and os_platform == "windows":
+        pArgs.append('strela-scanner-upgrader.exe')
+    elif os.path.exists(os.path.join(get_application_path(), 'strela-scanner-upgrader.py')):
+        pArgs.append(args.python)
+        pArgs.append('strela-scanner-upgrader.py')
     elif os.path.exists(os.path.join(get_application_path(), 'loki-upgrader.py')):
         pArgs.append(args.python)
         pArgs.append('loki-upgrader.py')
     else:
-        logger.log("ERROR", "Update", "Cannot find neither thor-upgrader.exe nor thor-upgrader.py in the current working directory.")
+        logger.log("ERROR", "Update", "Cannot find neither strela-scanner-upgrader.exe nor strela-scanner-upgrader.py in the current working directory.")
 
     if sigsOnly:
         pArgs.append('--sigsonly')
@@ -1524,7 +1527,7 @@ def main():
         print('The --logfolder and -l directives are not compatible with --nolog')
         sys.exit(1)
 		
-    filename = 'loki_%s_%s.log' % (getHostname(os_platform), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    filename = 'strela_%s_%s.log' % (getHostname(os_platform), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     if args.logfolder and args.l:
         print('Must specify either log folder with --logfolder, which uses the default filename, or log file with -l. Log file can be an absolute path')
         sys.exit(1)

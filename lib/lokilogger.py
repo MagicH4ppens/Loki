@@ -186,7 +186,7 @@ class LokiLogger:
                 if self.csv:
                     logfile.write(self.Format(self.FILE_CSV, u"{0},{1},{2},{3},{4}{5}", getSyslogTimestamp(), self.hostname, mes_type, module, message, self.linesep))
                 else:
-                    logfile.write(self.Format(self.FILE_LINE, u"{0} {1} LOKI: {2}: MODULE: {3} MESSAGE: {4}{5}", getSyslogTimestamp(), self.hostname, mes_type.title(), module, message, self.linesep))
+                    logfile.write(self.Format(self.FILE_LINE, u"{0} {1} STRELA: {2}: MODULE: {3} MESSAGE: {4}{5}", getSyslogTimestamp(), self.hostname, mes_type.title(), module, message, self.linesep))
         except Exception:
             if self.debug:
                 traceback.print_exc()
@@ -195,7 +195,7 @@ class LokiLogger:
 
     def log_to_remotesys(self, message, mes_type, module):
         # Preparing the message
-        syslog_message = self.Format(self.SYSLOG_LINE, "LOKI: {0}: MODULE: {1} MESSAGE: {2}", mes_type.title(), module, message)
+        syslog_message = self.Format(self.SYSLOG_LINE, "STRELA: {0}: MODULE: {1} MESSAGE: {2}", mes_type.title(), module, message)
         try:
             # Mapping LOKI's levels to the syslog levels
             if mes_type == "NOTICE":
@@ -222,11 +222,7 @@ class LokiLogger:
             print(str(Back.WHITE))
             print(" ".ljust(79) + Back.BLACK + Style.BRIGHT)
 
-            print("      __   ____  __ ______  ")
-            print("     / /  / __ \\/ //_/  _/  ")
-            print("    / /__/ /_/ / ,< _/ /    ")
-            print("   /____/\\____/_/|_/___/    ")
-            print("   YARA and IOC Scanner     ")
+            print("  STRELA - YARA and IOC Scanner     ")
             print("  ")
             print("   by Florian Roth, GNU General Public License")
             print("   version %s (Python 3 release)" % __version__)
@@ -241,7 +237,7 @@ class LokiLogger:
             print(Back.GREEN + " ".ljust(79) + Back.BLACK + Fore.GREEN)
 
             print("  ")
-            print("  LOKI UPGRADER ")
+            print("  STRELA SCANNER UPGRADER ")
 
             print("  ")
             print(Back.GREEN + " ".ljust(79) + Back.BLACK)

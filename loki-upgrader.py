@@ -77,8 +77,6 @@ class LOKIUpdater(object):
         "https://github.com/reversinglabs/reversinglabs-yara-rules/archive/develop.zip"
     ]
     
-    UPDATE_URL_LOKI = "https://api.github.com/repos/Neo23x0/Loki/releases/latest"
-    
     def __init__(self, debug, logger, application_path):
         self.debug = debug
         self.logger = logger
@@ -172,70 +170,8 @@ class LOKIUpdater(object):
 
 
     def update_loki(self):
-        try:
-
-            # Downloading the info for latest release
-            try:
-                self.logger.log("INFO", "Upgrader", "Checking location of latest release %s ..." % self.UPDATE_URL_LOKI)
-                response_info = urlopen(self.UPDATE_URL_LOKI)
-                data = json.load(response_info)
-                # Get download URL
-                zip_url = data['assets'][0]['browser_download_url']
-                self.logger.log("INFO", "Upgrader", "Downloading latest release %s ..." % zip_url)
-                response_zip = urlopen(zip_url)
-            except Exception:
-                if self.debug:
-                    traceback.print_exc()
-                self.logger.log("ERROR", "Upgrader", "Error downloading the loki update - check your Internet connection")
-                sys.exit(1)
-
-            # Read ZIP file
-            try:
-                zipUpdate = zipfile.ZipFile(io.BytesIO(response_zip.read()))
-                for zipFilePath in zipUpdate.namelist():
-                    if zipFilePath.endswith("/") or "/config/" in zipFilePath or "/loki-upgrader.exe" in zipFilePath:
-                        continue
-
-                    source = zipUpdate.open(zipFilePath)
-                    targetFile = "/".join(zipFilePath.split("/")[1:])
-
-                    self.logger.log("INFO", "Upgrader", "Extracting %s ..." %targetFile)
-
-                    try:
-                        # Create file if not present
-                        if not os.path.exists(os.path.dirname(targetFile)):
-                            if os.path.dirname(targetFile) != '':
-                                os.makedirs(os.path.dirname(targetFile))
-                    except Exception:
-                        if self.debug:
-                            self.logger.log("DEBUG", "Upgrader", "Cannot create dir name '%s'" % os.path.dirname(targetFile))
-                            traceback.print_exc()
-
-                    try:
-                        # Create target file
-                        target = open(targetFile, "wb")
-                        with source, target:
-                            shutil.copyfileobj(source, target)
-                            if self.debug:
-                                self.logger.log("DEBUG", "Upgrader", "Successfully extracted '%s'" % targetFile)
-                        target.close()
-                    except Exception:
-                        self.logger.log("ERROR", "Upgrader", "Cannot extract '%s'" % targetFile)
-                        if self.debug:
-                            traceback.print_exc()
-
-            except Exception:
-                if self.debug:
-                    traceback.print_exc()
-                self.logger.log("ERROR", "Upgrader",
-                                "Error while extracting the signature files from the download package")
-                sys.exit(1)
-
-        except Exception:
-            if self.debug:
-                traceback.print_exc()
-            return False
-        return True
+        self.logger.log("NOTICE", "Upgrader", "Program self-update is disabled; only signatures will be updated")
+        return False
 
 
 def get_application_path():
@@ -260,7 +196,7 @@ if __name__ == '__main__':
 
     # Parse Arguments
     parser = argparse.ArgumentParser(description='Loki - Upgrader')
-    parser.add_argument('-l', help='Log file', metavar='log-file', default='loki-upgrade.log')
+    parser.add_argument('-l', help='Log file', metavar='log-file', default='strela-upgrade.log')
     parser.add_argument('--sigsonly', action='store_true', help='Update the signatures only', default=False)
     parser.add_argument('--progonly', action='store_true', help='Update the program files only', default=False)
     parser.add_argument('--nolog', action='store_true', help='Don\'t write a local log file', default=False)
@@ -283,10 +219,9 @@ if __name__ == '__main__':
     # Update LOKI
     updater = LOKIUpdater(args.debug, logger, get_application_path())
 
-    if not args.sigsonly:
-        logger.log("INFO", "Upgrader", "Updating LOKI ...")
-        updater.update_loki()
-    if not args.progonly:
+    if args.progonly and not args.sigsonly:
+        logger.log("NOTICE", "Upgrader", "Program self-update is disabled; nothing to update in --progonly mode")
+    else:
         logger.log("INFO", "Upgrader", "Updating Signatures ...")
         updater.update_signatures(args.clean)
 
